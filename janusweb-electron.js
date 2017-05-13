@@ -1,5 +1,5 @@
-const {app, BrowserWindow} = require('electron')
-const localshortcut = require('electron-localshortcut');
+const {app, BrowserWindow} = require('electron');
+const localShortcut = require('electron-localshortcut');
 
 const path = require('path')
 const url = require('url')
@@ -18,7 +18,6 @@ function JanusWebElectron() {
   this.windows.push(this.createWindow());
 
 
-  localShortcut.register('CmdOrCtrl+N', this.createWindow.bind(this));
 }
 JanusWebElectron.prototype.createWindow = function() {
   // Create the browser window.
@@ -35,17 +34,17 @@ JanusWebElectron.prototype.createWindow = function() {
     slashes: true
   }))
 
-  // Open the DevTools.
-  //win.webContents.openDevTools()
-
-  // Emitted when the window is closed.
-  win.on('closed', () => {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
-    win = null
-  })
+  localShortcut.register(win, 'CmdOrCtrl+Shift+J', this.showDevTools.bind(this, win));
+  localShortcut.register(win, 'CmdOrCtrl+N', this.createWindow.bind(this));
+  localShortcut.register(win, 'CmdOrCtrl+W', this.closeWindow.bind(this, win));
   return win;
+}
+JanusWebElectron.prototype.showDevTools = function(win) {
+  // Open the DevTools.
+  win.webContents.openDevTools()
+}
+JanusWebElectron.prototype.closeWindow = function(win) {
+  win.close();
 }
 
 // This method will be called when Electron has finished
