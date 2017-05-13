@@ -1,0 +1,10 @@
+{
+  "name": "janusweb-electron",
+  "version": "1.0.30",
+  "main": "janusweb-electron.js",
+  "dependencies": {
+    "electron": "^1.7.0",
+    "electron-localshortcut": "^1.1.1",
+    "janusweb": "^1.0.30"
+  }
+}
