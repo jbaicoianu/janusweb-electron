@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "electron-localshortcut": "^1.1.1",
-    "electron": "^1.7.0"
+    "electron": "^9.1.0"
   },
   "devDependencies": {
     "janusweb": "^1.0.30"
