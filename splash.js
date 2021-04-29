@@ -1,7 +1,5 @@
 const { BrowserWindow } = require('electron');
 const { EventEmitter } = require('events');
-const process = require('process');
-const child_process = require('child_process');
 const { initACLs } = require('./win32acls.js');
 
 class SplashScreen extends EventEmitter {
