@@ -1,6 +1,14 @@
 const {app, BrowserWindow} = require('electron');
 const localShortcut = require('electron-localshortcut');
 
+const { SplashScreen, SplashScreenPermissionsEntry } = require('./splash.js');
+
+let splash = new SplashScreen();
+splash.add(new SplashScreenPermissionsEntry());
+
+//app.commandLine.appendSwitch('force-webxr-runtime', 'openxr');
+app.commandLine.appendSwitch('autoplay-policy', 'no-user-gesture-required');
+
 const path = require('path')
 const url = require('url')
 
@@ -9,22 +17,24 @@ const url = require('url')
 let januswebapp;
 
 function initJanusWeb() {
-  januswebapp = new JanusWebElectron();
+  splash.on('finish', () => {
+    januswebapp = new JanusWebElectron();
+  });
+  splash.begin();
 }
 
 function JanusWebElectron() {
   this.windows = [];
 
   this.windows.push(this.createWindow());
-
-
 }
 JanusWebElectron.prototype.createWindow = function() {
   // Create the browser window.
   var win = new BrowserWindow({
-    width: 1024,
-    height: 768,
-    title: 'JanusWeb'
+    width: 1920,
+    height: 1080,
+    title: 'JanusXR',
+    show: false,
   })
 
   // and load the index.html of the app.
@@ -33,6 +43,11 @@ JanusWebElectron.prototype.createWindow = function() {
     protocol: 'file:',
     slashes: true
   }))
+
+  win.once('ready-to-show', () => {
+    win.show();
+    win.webContents.executeJavaScript('setTimeout(() => { navigator.xr.dispatchEvent(new CustomEvent("sessiongranted")); }');
+  });
 
   localShortcut.register(win, 'CmdOrCtrl+Shift+J', this.showDevTools.bind(this, win));
   localShortcut.register(win, 'CmdOrCtrl+N', this.createWindow.bind(this));
@@ -70,4 +85,5 @@ app.on('activate', () => {
   }
 */
 })
+
 
