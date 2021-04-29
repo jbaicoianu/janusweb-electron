@@ -9,13 +9,13 @@
     "url": "https://github.com/jbaicoianu/janusweb-electron"
   },
   "dependencies": {
-    "electron": "^12.0.2",
     "electron-builder": "^22.10.5",
     "electron-localshortcut": "^1.1.1",
     "electron-packager": "^15.2.0"
   },
   "devDependencies": {
-    "janusweb": "^1.5.28"
+    "janusweb": "^1.5.28",
+    "electron": "^12.0.2"
   },
   "keywords": [
     "elation",
