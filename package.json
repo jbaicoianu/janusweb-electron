@@ -4,17 +4,18 @@
   "main": "janusweb-electron.js",
   "author": "James Baicoianu",
   "license": "MIT",
-
   "repository": {
     "type": "git",
     "url": "https://github.com/jbaicoianu/janusweb-electron"
   },
   "dependencies": {
+    "electron": "^12.0.2",
+    "electron-builder": "^22.10.5",
     "electron-localshortcut": "^1.1.1",
-    "electron": "^9.1.0"
+    "electron-packager": "^15.2.0"
   },
   "devDependencies": {
-    "janusweb": "^1.0.30"
+    "janusweb": "^1.5.28"
   },
   "keywords": [
     "elation",
@@ -31,16 +32,13 @@
     "clean:osx": "rm -rf ./dist/osx",
     "clean:win": "rm -rf ./dist/win",
     "clean:linux": "rm -rf ./dist/linux",
-
     "pack": "npm run clean && npm run pack:osx && npm run pack:win && npm run pack:linux",
     "pack:osx": "npm run clean:osx && electron-packager . JanusWeb --out=dist/osx --platform=darwin --arch=x64 --icon=assets/osx/logo.icns --ignore=dist --ignore=assets --ignore=builder.json --ignore=bower.json --ignore=README.md --ignore=.gitignore",
     "pack:win": "npm run clean:win && electron-packager . JanusWeb --out=dist/win --platform=win32 --arch=x64 --icon=janusweb/media/icons/janusweb.ico --ignore=dist --ignore=assets --ignore=builder.json --ignore=bower.json --ignore=README.md --ignore=.gitignore",
     "pack:linux": "npm run clean:linux && electron-packager . JanusWeb --out=dist/linux --platform=linux --arch=x64 --ignore=dist --ignore=builder.json --ignore=bower.json --ignore=README.md --ignore=.gitignore",
-
     "build": "npm run build:osx && npm run build:win && npm run build:linux",
     "build:osx": "npm run pack:osx && electron-builder \"dist/osx/JanusWeb-darwin-x64/JanusWeb.app\" --platform=osx --out=\"dist/osx\" --config=builder.json",
     "build:win": "npm run pack:win && electron-builder \"dist/win/JanusWeb-win32-x64\" --platform=win --out=\"dist/win\" --config=builder.json",
     "build:linux": "npm run pack:linux && electron-builder \"dist/linux/JanusWeb-linux-x64\" --platform=linux --out=\"dist/linux\" --config=builder.json"
-
   }
 }
