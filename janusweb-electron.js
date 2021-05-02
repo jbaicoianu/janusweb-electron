@@ -1,7 +1,19 @@
 const {app, BrowserWindow} = require('electron');
 const localShortcut = require('electron-localshortcut');
-
 const { SplashScreen, SplashScreenPermissionsEntry } = require('./splash.js');
+const process = require('process');
+const commander = require('commander');
+const program = new commander.Command();
+
+program.version('0.0.1');
+program.option('-d, --debug', 'Debug mode');
+program.option('-m, --mode <type>', 'Display mode (2d or vr)');
+
+// FIXME if I don't add an extra entry at the start of our arguments, commander ignores the first arg
+program.parse(['', ...process.argv]);
+const options = program.opts();
+
+let autoEnterVR = (options.mode == 'vr');
 
 let splash = new SplashScreen();
 splash.add(new SplashScreenPermissionsEntry());
@@ -46,7 +58,25 @@ JanusWebElectron.prototype.createWindow = function() {
 
   win.once('ready-to-show', () => {
     win.show();
-    win.webContents.executeJavaScript('setTimeout(() => { navigator.xr.dispatchEvent(new CustomEvent("sessiongranted")); }');
+
+    if (autoEnterVR) {
+      console.log('GO VR GO');
+      setTimeout(() => {
+        win.webContents.sendInputEvent({
+          type: 'mousedown',
+          x: 0,
+          y: 0,
+          clickCount: 1
+        });
+        win.webContents.sendInputEvent({
+          type: 'mouseup',
+          x: 0,
+          y: 0
+        });
+
+        win.webContents.executeJavaScript('navigator.xr.dispatchEvent(new CustomEvent("sessiongranted"));');
+      }, 100);
+    }
   });
 
   localShortcut.register(win, 'CmdOrCtrl+Shift+J', this.showDevTools.bind(this, win));
