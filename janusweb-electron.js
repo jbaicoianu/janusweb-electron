@@ -13,8 +13,6 @@ program.option('-m, --mode <type>', 'Display mode (2d or vr)');
 program.parse(['', ...process.argv]);
 const options = program.opts();
 
-let autoEnterVR = (options.mode == 'vr');
-
 let splash = new SplashScreen();
 splash.add(new SplashScreenPermissionsEntry());
 
@@ -59,9 +57,10 @@ JanusWebElectron.prototype.createWindow = function() {
   win.once('ready-to-show', () => {
     win.show();
 
-    if (autoEnterVR) {
-      console.log('GO VR GO');
+    if (options.mode == 'vr') {
+      // FIXME - firing this on a short timeout helps give the page time to load and register its event handler, but there are probably more reliable ways to do this
       setTimeout(() => {
+        // Synthesize click event so that Chrome's LocalFrame::HasTransientUserActivation() check when entering VR returns true
         win.webContents.sendInputEvent({
           type: 'mousedown',
           x: 0,
@@ -74,6 +73,7 @@ JanusWebElectron.prototype.createWindow = function() {
           y: 0
         });
 
+        // Send fake sessiongranted event
         win.webContents.executeJavaScript('navigator.xr.dispatchEvent(new CustomEvent("sessiongranted"));');
       }, 100);
     }
