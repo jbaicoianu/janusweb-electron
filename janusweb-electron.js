@@ -7,7 +7,7 @@ const program = new commander.Command();
 
 program.version('0.0.1');
 program.option('-d, --debug', 'Debug mode');
-program.option('-m, --mode <type>', 'Display mode (2d or vr)');
+program.option('-m, --mode <type>', 'Display mode (2d or vr)', '2d');
 
 // FIXME if I don't add an extra entry at the start of our arguments, commander ignores the first arg
 program.parse(['', ...process.argv]);
